@@ -77,7 +77,7 @@ export class EditTaskFilterCloudComponent implements OnChanges {
     columns = [
         { value: 'id', label: 'ID' },
         { value: 'name', label: 'NAME' },
-        { value: 'createdDate', label: 'Created Date' },
+        { value: 'createdDate', label: 'CREATED DATE' },
         { value: 'priority', label: 'PRIORITY' },
         { value: 'processDefinitionId', label: 'PROCESS DEFINITION ID' }
     ];
