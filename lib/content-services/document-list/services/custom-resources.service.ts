@@ -30,7 +30,8 @@ import {
     SharedLinkPaging,
     FavoritePaging,
     SiteMemberPaging,
-    SiteRolePaging
+    SiteRolePaging,
+    RecordCategoryPaging
 } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
@@ -258,7 +259,7 @@ export class CustomResourcesService {
      */
     isCustomSource(folderId: string): boolean {
         let isCustomSources = false;
-        const sources = ['-trashcan-', '-sharedlinks-', '-sites-', '-mysites-', '-favorites-', '-recent-'];
+        const sources = ['-trashcan-', '-sharedlinks-', '-sites-', '-mysites-', '-favorites-', '-recent-', '-filePlan-'];
 
         if (sources.indexOf(folderId) > -1) {
             isCustomSources = true;
@@ -303,10 +304,30 @@ export class CustomResourcesService {
             return this.loadFavorites(pagination, includeFields);
         } else if (nodeId === '-recent-') {
             return this.getRecentFiles('-me-', pagination);
+        } else if (nodeId === '-filePlan-') {
+            return this.loadFilePlan('-filePlan-', pagination, includeFields);
         }
     }
 
-    // TODO: remove it from here
+    /**
+     * Get file plans.
+     * @param nodeId ID of the target folder node, default  value is -filePlan-
+     * @param pagination Specifies how to paginate the results
+     * @param includeFields List of data field names to include in the results
+     * @returns List of filePlans
+     */
+    loadFilePlan(nodeId: string, pagination: PaginationModel, includeFields: string[] = []): Observable<RecordCategoryPaging> {
+        const options = {
+            include: this.getIncludesFields(includeFields),
+            maxItems: pagination.maxItems,
+            skipCount: pagination.skipCount
+        };
+
+        return from(this.apiService.fileplansApi.getFilePlanCategories(nodeId, options))
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
 
     /**
      * Gets the contents of one of the well-known aliases in the form of node ID strings.

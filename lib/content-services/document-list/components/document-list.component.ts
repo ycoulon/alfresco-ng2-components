@@ -745,6 +745,10 @@ export class DocumentListComponent implements OnInit, OnChanges, OnDestroy, Afte
                         this.navigateTo(node.entry);
                     });
             }
+
+            if (nodeEntry.entry.id && nodeEntry.entry.nodeType === 'rma:recordCategory') {
+                this.navigateTo(nodeEntry.entry);
+            }
         }
     }
 
@@ -811,6 +815,10 @@ export class DocumentListComponent implements OnInit, OnChanges, OnDestroy, Afte
         let canNavigateFolder: boolean = false;
 
         if (node && node.isFolder) {
+            canNavigateFolder = true;
+        }
+
+        if (node && node.nodeType === 'rma:recordCategory') {
             canNavigateFolder = true;
         }
 

@@ -21,7 +21,8 @@ import {
     Core,
     Activiti,
     SearchApi,
-    Node
+    Node,
+    FilePlansApi
 } from '@alfresco/js-api';
 import { AlfrescoApiCompatibility, AlfrescoApiConfig } from '@alfresco/js-api';
 import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
@@ -94,6 +95,10 @@ export class AlfrescoApiService {
 
     get groupsApi(): Core.GroupsApi {
         return this.getInstance().core.groupsApi;
+    }
+
+    get fileplansApi(): FilePlansApi {
+        return new FilePlansApi(this.getInstance());
     }
 
     constructor(protected appConfig: AppConfigService,

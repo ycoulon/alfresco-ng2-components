@@ -16,6 +16,40 @@
  */
 
 export let presetsDefaultModel = {
+    '-file-plan-': [
+        {
+            key: '$thumbnail',
+            type: 'image',
+            srTitle: 'ADF-DOCUMENT-LIST.LAYOUT.THUMBNAIL',
+            sortable: false
+        },
+        {
+            key: 'name',
+            type: 'text',
+            title: 'ADF-DOCUMENT-LIST.LAYOUT.NAME',
+            cssClass: 'full-width ellipsis-cell',
+            sortable: true
+        },
+        {
+            key: 'content.sizeInBytes',
+            type: 'fileSize',
+            title: 'ADF-DOCUMENT-LIST.LAYOUT.SIZE',
+            sortable: true
+        },
+        {
+            key: 'modifiedAt',
+            type: 'date',
+            title: 'ADF-DOCUMENT-LIST.LAYOUT.MODIFIED_ON',
+            format: 'timeAgo',
+            sortable: true
+        },
+        {
+            key: 'modifiedByUser.displayName',
+            type: 'text',
+            title: 'ADF-DOCUMENT-LIST.LAYOUT.MODIFIED_BY',
+            sortable: true
+        }
+    ],
     '-trashcan-': [
         {
             key: '$thumbnail',
