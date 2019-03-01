@@ -623,8 +623,8 @@
               "-favorites-",
               "-recent-",
               "-sharedlinks-",
-              "default",
-              "-filePlan-"
+              "-filePlan-",
+              "default"
             ]
           },
           "patternProperties": {

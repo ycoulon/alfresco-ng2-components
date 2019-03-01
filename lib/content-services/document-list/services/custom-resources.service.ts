@@ -30,7 +30,9 @@ import {
     SharedLinkPaging,
     FavoritePaging,
     SiteMemberPaging,
-    SiteRolePaging
+    SiteRolePaging,
+    RecordCategoryPaging,
+    FilePlansApi
 } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
@@ -45,6 +47,10 @@ export class CustomResourcesService {
 
     constructor(private apiService: AlfrescoApiService,
                 private logService: LogService) {
+    }
+
+    get fileplansApi(): FilePlansApi {
+        return this.apiService.getInstance().gsCore.fileplansApi;
     }
 
     /**
@@ -214,10 +220,11 @@ export class CustomResourcesService {
 
     /**
      * Gets all record categories in the file plan.
+     * @param nodeId ID of the target folder node
      * @param pagination Specifies how to paginate the results
      * @returns List of record categories
      */
-    loadFilePlan(nodeId: string, pagination: PaginationModel): Observable<NodePaging> {
+    loadFilePlan(nodeId: string, pagination: PaginationModel): Observable<RecordCategoryPaging> {
         const options = {
             include: ['properties', 'aspectNames'],
             maxItems: pagination.maxItems,
@@ -225,7 +232,7 @@ export class CustomResourcesService {
         };
 
         return new Observable((observer) => {
-            this.apiService.getInstance().gsCore.fileplansApi.getFilePlanCategories(nodeId, options)
+            this.fileplansApi.getFilePlanCategories(nodeId, options)
                 .then((page: any) => {
                         page.list.entries.map(
                             ({ entry }: any) => {
