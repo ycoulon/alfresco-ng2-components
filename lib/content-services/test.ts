@@ -36,6 +36,6 @@ declare const pdfjsLib: any;
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'base/pdfjs-dist/build/pdf.worker.min.js';
 
 // Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
+const context = require.context('./', true, /custom-resources\.service\.spec\.ts/);
 // And load the modules.
 context.keys().map(context);

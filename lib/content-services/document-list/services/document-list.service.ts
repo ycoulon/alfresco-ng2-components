@@ -20,7 +20,7 @@ import {
 } from '@alfresco/adf-core';
 
 import { Injectable } from '@angular/core';
-import { NodeEntry, NodePaging } from '@alfresco/js-api';
+import { NodeEntry, NodePaging, RecordCategoryChildPaging, RecordFolderAssociationPaging } from '@alfresco/js-api';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -179,6 +179,16 @@ export class DocumentListService {
      */
     getDefaultMimeTypeIcon(): string {
         return this.thumbnailService.getDefaultMimeTypeIcon();
+    }
+
+    getRecordCategory(recordFolderId: string,  opts = {}): Observable<RecordCategoryChildPaging> {
+        return from(this.apiService.recordCategoriesApi.listRecordCategoryChildren(recordFolderId, opts))
+            .pipe(catchError(this.handleError));
+    }
+
+    getRecordFolders(recordFolderId: string, opts = {}): Observable<RecordFolderAssociationPaging> {
+        return from(this.apiService.recordFoldersApi.listRecordFolderChildren(recordFolderId, opts))
+            .pipe(catchError(this.handleError));
     }
 
     private handleError(error: any) {

@@ -46,7 +46,7 @@ import {
 } from '@alfresco/adf-core';
 
 import { Node, NodeEntry, NodePaging, Pagination } from '@alfresco/js-api';
-import { Subject, BehaviorSubject, Subscription, of } from 'rxjs';
+import { Observable, of, Subject, BehaviorSubject, Subscription } from 'rxjs';
 import { ShareDataRow } from './../data/share-data-row.model';
 import { ShareDataTableAdapter } from './../data/share-datatable-adapter';
 import { presetsDefaultModel } from '../models/preset.model';
@@ -57,7 +57,7 @@ import { NodeEntityEvent, NodeEntryEvent } from './node.event';
 import { CustomResourcesService } from './../services/custom-resources.service';
 import { NavigableComponentInterface } from '../../breadcrumb/navigable-component.interface';
 import { RowFilter } from '../data/row-filter.model';
-import { Observable } from 'rxjs/index';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'adf-document-list',
@@ -626,19 +626,48 @@ export class DocumentListComponent implements OnInit, OnChanges, OnDestroy, Afte
                 });
         } else {
 
-            this.documentListService.getFolder(null, {
-                maxItems: this._pagination.maxItems,
-                skipCount: this._pagination.skipCount,
-                rootFolderId: nodeId,
-                where: this.where
-            }, this.includeFields)
-                .subscribe((nodePaging: NodePaging) => {
+            const node: any = this.data ? this.data.getRows().find((x) => x['obj'].entry.id === this.currentFolderId) : null;
+            if (node && node.node.entry &&
+                (node.node.entry.nodeType === 'rma:recordCategory' || node.node.entry.nodeType === 'rma:recordFolder') ||
+                (this.folderNode && this.folderNode.nodeType === 'rma:recordCategory' || this.folderNode && this.folderNode.nodeType === 'rma:recordFolder')) {
+                const isCategory = (node ? node.node.entry.nodeType === 'rma:recordCategory' : (this.folderNode && this.folderNode.nodeType === 'rma:recordCategory'));
+                const id = (node ? node.node.entry.id : this.folderNode.id);
+                const getRecord$ = isCategory ?
+                    this.documentListService.getRecordCategory(id, {
+                        maxItems: this._pagination.maxItems,
+                        skipCount: this._pagination.skipCount,
+                        where: this.where
+                    }).pipe(map((x) => new NodePaging(x)))
+                    :
+                    this.documentListService.getRecordFolders(id, {
+                        maxItems: this._pagination.maxItems,
+                        skipCount: this._pagination.skipCount,
+                        where: this.where
+                    }).pipe(map((x) => new NodePaging(x)));
+
+                getRecord$.subscribe((nodePaging) => {
                     this.getSourceNodeWithPath(nodeId).subscribe((nodeEntry: NodeEntry) => {
                         this.onPageLoaded(nodePaging);
                     });
                 }, (err) => {
                     this.handleError(err);
                 });
+            } else {
+                this.documentListService.getFolder(null, {
+                    maxItems: this._pagination.maxItems,
+                    skipCount: this._pagination.skipCount,
+                    rootFolderId: nodeId,
+                    where: this.where
+                }, this.includeFields)
+                    .subscribe((nodePaging: NodePaging) => {
+                        this.getSourceNodeWithPath(nodeId).subscribe((nodeEntry: NodeEntry) => {
+                            this.onPageLoaded(nodePaging);
+                        });
+                    }, (err) => {
+                        this.handleError(err);
+                    });
+            }
+
         }
     }
 
@@ -746,9 +775,10 @@ export class DocumentListComponent implements OnInit, OnChanges, OnDestroy, Afte
                     });
             }
 
-            if (nodeEntry.entry.id && nodeEntry.entry.nodeType === 'rma:recordCategory') {
+            if (nodeEntry.entry.id && (nodeEntry.entry.nodeType === 'rma:recordCategory' || nodeEntry.entry.nodeType === 'rma:recordFolder')) {
                 this.navigateTo(nodeEntry.entry);
             }
+
         }
     }
 
@@ -818,7 +848,7 @@ export class DocumentListComponent implements OnInit, OnChanges, OnDestroy, Afte
             canNavigateFolder = true;
         }
 
-        if (node && node.nodeType === 'rma:recordCategory') {
+        if (node && (node.nodeType === 'rma:recordCategory' || node.nodeType  === 'rma:recordFolder')) {
             canNavigateFolder = true;
         }
 

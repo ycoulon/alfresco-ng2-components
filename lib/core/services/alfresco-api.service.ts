@@ -22,7 +22,9 @@ import {
     Activiti,
     SearchApi,
     Node,
-    FilePlansApi
+    FilePlansApi,
+    RecordCategoriesApi,
+    RecordFoldersApi
 } from '@alfresco/js-api';
 import { AlfrescoApiCompatibility, AlfrescoApiConfig } from '@alfresco/js-api';
 import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
@@ -99,6 +101,14 @@ export class AlfrescoApiService {
 
     get fileplansApi(): FilePlansApi {
         return new FilePlansApi(this.getInstance());
+    }
+
+    get recordCategoriesApi(): RecordCategoriesApi {
+        return new RecordCategoriesApi(this.getInstance());
+    }
+
+    get recordFoldersApi(): RecordFoldersApi {
+        return new RecordFoldersApi(this.getInstance());
     }
 
     constructor(protected appConfig: AppConfigService,
