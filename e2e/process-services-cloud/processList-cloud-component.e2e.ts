@@ -22,6 +22,10 @@ import { AppListCloudPage } from '@alfresco/adf-testing';
 
 import { NavigationBarPage } from '../pages/adf/navigationBarPage';
 import { ConfigEditorPage } from '../pages/adf/configEditorPage';
+
+import { ProcessDefinitionsService } from '@alfresco/adf-testing';
+import { ProcessInstancesService } from '@alfresco/adf-testing';
+
 import { ProcessListCloudConfiguration } from './processListCloud.config';
 
 describe('Process list cloud', () => {
