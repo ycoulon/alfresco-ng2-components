@@ -131,6 +131,7 @@ export class TasksCloudDemoPage {
 
     clickAppButton() {
         this.appButton.click();
+        browser.driver.sleep(400);
         this.createButtonIsDisplayed();
         return this;
     }
