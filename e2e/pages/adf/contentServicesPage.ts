@@ -25,10 +25,14 @@ import { by, element, protractor, $$, browser } from 'protractor';
 import path = require('path');
 import { DateUtil } from '../../util/dateUtil';
 import { BrowserVisibility } from '@alfresco/adf-testing';
+import { FormControllersPage } from '@alfresco/adf-testing';
 
 export class ContentServicesPage {
 
     contentList = new DocumentListPage(element.all(by.css('adf-upload-drag-area adf-document-list')).first());
+    formControllersPage = new FormControllersPage();
+
+    multipleFileUploadToggle = element(by.id('adf-document-list-enable-drop-files'));
     createFolderDialog = new CreateFolderDialog();
     createLibraryDialog = new CreateLibraryDialog();
     dragAndDropAction = new DropActions();
@@ -145,6 +149,16 @@ export class ContentServicesPage {
         BrowserVisibility.waitUntilElementIsVisible(this.moveContentElement);
         BrowserVisibility.waitUntilElementIsVisible(this.deleteContentElement);
         BrowserVisibility.waitUntilElementIsVisible(this.downloadContent);
+    }
+
+    enableDropFilesInAFolder() {
+        this.formControllersPage.enableToggle(this.multipleFileUploadToggle);
+        return this;
+    }
+
+    disableDropFilesInAFolder() {
+        this.formControllersPage.disableToggle(this.multipleFileUploadToggle);
+        return this;
     }
 
     clickFileHyperlink(fileName) {
