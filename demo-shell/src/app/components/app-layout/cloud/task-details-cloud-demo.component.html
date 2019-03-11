@@ -4,7 +4,12 @@
 </button>
 
 <h4 data-automation-id="task-details-header">Simple page to show the taskId: {{ taskId }} of the app: {{ appName }}</h4>
-
+<adf-form
+[showValidationIcon]="false"
+[showRefreshButton]="false"
+[taskId]="'1'"
+[form]="formDefinition">
+</adf-form>
 <adf-cloud-task-header
     [appName]="appName"
     [taskId]="taskId"
