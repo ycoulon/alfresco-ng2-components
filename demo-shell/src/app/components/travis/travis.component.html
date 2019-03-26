@@ -1,0 +1,5 @@
+<h1>Travis Chart</h1>
+
+<ul>
+    <li *ngFor="let build of builds">{{ build.number }} - {{ build.finished_at }} - {{build.duration}}</li>
+</ul>

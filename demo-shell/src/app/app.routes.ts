@@ -49,6 +49,7 @@ import { StartProcessCloudDemoComponent } from './components/app-layout/cloud/st
 import { TemplateDemoComponent } from './components/template-list/template-demo.component';
 import { PeopleGroupCloudDemoComponent } from './components/app-layout/cloud/people-groups-cloud-demo.component';
 import { ProcessDetailsCloudDemoComponent } from './components/app-layout/cloud/process-details-cloud-demo.component';
+import { TravisComponent } from './components/travis/travis.component';
 
 export const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -338,6 +339,10 @@ export const appRoutes: Routes = [
             {
                 path: 'about',
                 loadChildren: 'app/components/about/about.module#AppAboutModule'
+            },
+            {
+                path: 'travis',
+                component: TravisComponent,
             },
             {
                 path: 'icons',

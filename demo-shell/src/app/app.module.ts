@@ -81,6 +81,7 @@ import { CloudSettingsComponent } from './components/app-layout/cloud/cloud-sett
 import { AppExtensionsModule } from './app-extension.module';
 import { ProcessDetailsCloudDemoComponent } from './components/app-layout/cloud/process-details-cloud-demo.component';
 import { NestedMenuPositionDirective } from './components/app-layout/cloud/directives/nested-menu-position.directive';
+import { TravisComponent } from './components/travis/travis.component';
 
 @NgModule({
     imports: [
@@ -112,6 +113,7 @@ import { NestedMenuPositionDirective } from './components/app-layout/cloud/direc
         LogoutComponent,
         AppLayoutComponent,
         HomeComponent,
+        TravisComponent,
         SearchBarComponent,
         SearchResultComponent,
         SearchExtendedComponent,
@@ -151,10 +153,7 @@ import { NestedMenuPositionDirective } from './components/app-layout/cloud/direc
         NestedMenuPositionDirective
     ],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS, useClass:
-            AuthBearerInterceptor, multi: true
-        },
+
         { provide: AppConfigService, useClass: DebugAppConfigService }, // not use this service in production
         {
             provide: TRANSLATION_PROVIDER,
