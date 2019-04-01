@@ -2,7 +2,9 @@
 
 git_changes=()
 #git_changes=(start-process-cloud.service.spec.ts start-process-cloud.service.ts ../alfresco-ng2-components/lib/process-services-cloud/src/lib/process/people-cloud.component.ts start-task-cloud.service.ts claim-task.directive.ts claim-task.directive.spec.ts)
-
+# ./scripts/affectedE2E.sh --uncommitted
+# ./scripts/affectedE2E.sh --branch development
+# ./scripts/affectedE2E.sh --sha 0220111
 if [[ "$1" == '--uncommitted' ]];
 then
 	git_changes_singleline+=("$(git diff --name-only )")
