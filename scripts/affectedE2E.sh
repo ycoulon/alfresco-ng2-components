@@ -142,13 +142,16 @@ then
     echo "Page: Find wrapping Pages of:" $page_camelcase_array
     findType="page"
     findFolder="lib/testing/src/lib/"
-    echo "node ./scripts/affectedFilesByImport.js $findType $findFolder $page_camelcase_array"
+    #echo "node ./scripts/affectedFilesByImport.js $findType $findFolder $page_camelcase_array"
     page_extended+="$(node ./scripts/affectedFilesByImport.js $findType $findFolder $page_camelcase_array)"
     for originalPageName in "${page_extended[@]}"; do
-        echo "node ./scripts/affectedClassName.js $originalPageName"
+        if [[ "$originalPageName" != '' ]];
+        then
+        #echo "node ./scripts/affectedClassName.js $originalPageName"
         extendPageClassName="$(node ./scripts/affectedClassName.js $originalPageName)"
         echo "$originalPageName has the page: $extendPageClassName";
         page_camelcase_array+=,$extendPageClassName
+        fi
     done
     echo "PageCamelCase: "$page_camelcase_array
 fi
@@ -178,7 +181,7 @@ then
     echo "Page: Find affected E2E"
     findType="e2e"
     findFolder="./e2e-example/"
-    echo "node ./scripts/affectedFilesByImport.js $findType $findFolder $page_camelcase_array"
+    #echo "node ./scripts/affectedFilesByImport.js $findType $findFolder $page_camelcase_array"
     e2e_array+="$(node ./scripts/affectedFilesByImport.js $findType $findFolder $page_camelcase_array)"
     echo $e2e_array
 fi
