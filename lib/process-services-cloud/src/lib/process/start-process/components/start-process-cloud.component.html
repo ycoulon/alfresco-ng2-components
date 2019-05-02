@@ -1,7 +1,8 @@
 <mat-card class="adf-start-process">
 
-    <mat-card-title>{{'ADF_CLOUD_PROCESS_LIST.ADF_CLOUD_START_PROCESS.FORM.TITLE' | translate}}
-    </mat-card-title>
+    <mat-card-header fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <mat-card-title>{{'ADF_CLOUD_PROCESS_LIST.ADF_CLOUD_START_PROCESS.FORM.TITLE' | translate}}</mat-card-title>
+    </mat-card-header>
 
     <mat-card-content *ngIf="!isProcessDefinitionsEmpty(); else emptyProcessDefinitionsList">
         <mat-card-subtitle id="error-message" *ngIf="errorMessageId">

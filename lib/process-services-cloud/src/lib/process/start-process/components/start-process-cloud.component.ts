@@ -17,7 +17,7 @@
 
 import {
     Component, EventEmitter, Input, OnChanges, OnInit,
-    Output, SimpleChanges, ViewChild, ViewEncapsulation
+    Output, SimpleChanges, ViewChild
 } from '@angular/core';
 
 import { ProcessInstanceCloud } from '../models/process-instance-cloud.model';
@@ -31,8 +31,7 @@ import { ProcessDefinitionCloud } from '../models/process-definition-cloud.model
 @Component({
     selector: 'adf-cloud-start-process',
     templateUrl: './start-process-cloud.component.html',
-    styleUrls: ['./start-process-cloud.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./start-process-cloud.component.scss']
 })
 export class StartProcessCloudComponent implements OnChanges, OnInit {
 
