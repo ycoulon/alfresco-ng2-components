@@ -30,7 +30,7 @@ import { AlfrescoApiCompatibility as AlfrescoApi } from '@alfresco/js-api';
 import { UploadActions } from '../../actions/ACS/upload.actions';
 import { ContentServicesPage } from '../../pages/adf/contentServicesPage';
 import { check } from '../../util/material';
-import { setConfigField } from '../../proxy';
+import {LocalStorageUtil} from '@alfresco/adf-testing';
 
 describe('Content metadata card - displaying all properties', () => {
 
@@ -83,7 +83,7 @@ describe('Content metadata card - displaying all properties', () => {
 
     it('[C307010] All the aspects are displayed when includeAll is set to true', async () => {
 
-        await setConfigField('content-metadata', JSON.stringify({
+        await LocalStorageUtil.setConfigField('content-metadata', JSON.stringify({
             presets: {
                 default: {
                     'includeAll': true
