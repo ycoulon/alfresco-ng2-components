@@ -58,7 +58,6 @@ export class FormCloud {
 
         if (json && json.formRepresentation && json.formRepresentation.formDefinition) {
             this.json = json;
-            this.json.variables = json.formRepresentation.formDefinition.variables;
             this.id = json.formRepresentation.id;
             this.name = json.formRepresentation.name;
             this.taskId = json.formRepresentation.taskId;
