@@ -26,7 +26,7 @@ import { TaskDetailsCloudDemoPage } from '../pages/adf/demo-shell/process-servic
 import resources = require('../util/resources');
 import CONSTANTS = require('../util/constants');
 
-xdescribe('Start Task', () => {
+describe('Start Task', () => {
 
     const loginSSOPage = new LoginSSOPage();
     const taskHeaderCloudPage = new TaskHeaderCloudPage();
@@ -70,7 +70,7 @@ xdescribe('Start Task', () => {
             browser.params.config.bpmHost,
             browser.params.config.oauth2.host,
             browser.params.config.identityHost);
-        loginSSOPage.loginSSOIdentityService(browser.params.identityUser.email, browser.params.identityUser.password);
+        loginSSOPage.loginSSOIdentityService(apsUser.email, apsUser.password);
         done();
     });
 
@@ -134,7 +134,7 @@ xdescribe('Start Task', () => {
         tasksCloudDemoPage.taskListCloudComponent().checkContentIsDisplayedByName(unassignedTaskName);
     });
 
-    xit('[C290166] Should be possible to cancel a task', () => {
+    it('[C290166] Should be possible to cancel a task', () => {
         tasksCloudDemoPage.openNewTaskForm();
         startTask.checkFormIsDisplayed();
         startTask.checkStartButtonIsDisabled()
@@ -171,7 +171,7 @@ xdescribe('Start Task', () => {
             .clickCancelButton();
     });
 
-    xit('[C291774] Should be displayed an error message if the date is invalid', () => {
+    it('[C291774] Should be displayed an error message if the date is invalid', () => {
         tasksCloudDemoPage.openNewTaskForm();
         startTask.addDueDate('12/12/2018')
             .checkStartButtonIsEnabled();
@@ -182,7 +182,7 @@ xdescribe('Start Task', () => {
             .clickCancelButton();
     });
 
-    xit('[C290182] Should be possible to assign the task to another user', () => {
+    it('[C290182] Should be possible to assign the task to another user', () => {
         tasksCloudDemoPage.openNewTaskForm();
         startTask.checkFormIsDisplayed();
         startTask.addName(standaloneTaskName);
@@ -194,14 +194,14 @@ xdescribe('Start Task', () => {
         tasksCloudDemoPage.taskListCloudComponent().checkContentIsNotDisplayedByName(standaloneTaskName);
     });
 
-    xit('[C291953] Assignee field should display the logged user as default', () => {
+    it('[C291953] Assignee field should display the logged user as default', () => {
         tasksCloudDemoPage.openNewTaskForm();
         startTask.checkFormIsDisplayed();
         expect(peopleCloudComponent.getAssignee()).toContain(apsUser.firstName, 'does not contain Admin');
         startTask.clickCancelButton();
     });
 
-    xit('[C305050] Should be able to reassign the removed user when starting a new task', () => {
+    it('[C305050] Should be able to reassign the removed user when starting a new task', () => {
         tasksCloudDemoPage.openNewTaskForm();
         startTask.checkFormIsDisplayed();
         startTask.addName(reassignTaskName);
