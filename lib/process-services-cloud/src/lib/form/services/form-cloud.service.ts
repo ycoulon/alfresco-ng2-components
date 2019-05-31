@@ -107,6 +107,19 @@ export class FormCloudService extends BaseCloudService {
             }),
             catchError((err) => this.handleError(err))
         );
+        // return from(this.apiService
+        //     .getInstance()
+        //     .oauth2Auth.callCustomApi(apiUrl, 'POST',
+        //         null, null, null,
+        //         { filedata: file, nodeType: 'cm:content', overwrite: true }, null,
+        //         ['multipart/form-data'], this.accepts,
+        //         this.returnType, null, null)
+        // ).pipe(
+        //     map((res: any) => {
+        //         return (res.entry);
+        //     }),
+        //     catchError((err) => this.handleError(err))
+        // );
     }
 
     /**
@@ -178,6 +191,11 @@ export class FormCloudService extends BaseCloudService {
             }),
             catchError((err) => this.handleError(err))
         );
+        // return of({
+        //     nodeId: '096aa190-6720-4eaf-9737-226e776acc97',
+        //     path: 'http://aps2test.envalfresco.com/alfresco',
+        //     type: 'gg'
+        // })
     }
 
     /**
@@ -290,7 +308,7 @@ export class FormCloudService extends BaseCloudService {
         return `${this.getBasePath(appName)}/query/v1/tasks/${taskId}/variables`;
     }
 
-    private buildFolderTask(appName: string, taskId: string): string {
+    buildFolderTask(appName: string, taskId: string): string {
         return `${this.getBasePath(appName)}/process-storage/v1/folders/tasks/${taskId}`;
     }
 
