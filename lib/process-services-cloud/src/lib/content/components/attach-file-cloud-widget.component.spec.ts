@@ -17,17 +17,17 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContentCloudNodeSelectorService } from '../../services/content-cloud-node-selector.service';
-import { ProcessCloudContentService } from '../../services/process-cloud-content.service';
+import { ContentCloudNodeSelectorService } from '../services/content-cloud-node-selector.service';
+import { ProcessCloudContentService } from '../../form/services/process-cloud-content.service';
 import { AttachFileCloudWidgetComponent } from './attach-file-cloud-widget.component';
 import { setupTestBed, FormFieldModel, FormModel, FormFieldTypes, FormFieldMetadata } from '@alfresco/adf-core';
-import { ProcessServiceCloudTestingModule } from '../../../testing/process-service-cloud.testing.module';
+import { ProcessServiceCloudTestingModule } from '../../testing/process-service-cloud.testing.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ContentModule } from '@alfresco/adf-content-services';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { Node } from '@alfresco/js-api';
-import { FormCloudModule } from '../../form-cloud.module';
+import { FormCloudModule } from '../../form/form-cloud.module';
 
 describe('AttachFileCloudWidgetComponent', () => {
   let widget: AttachFileCloudWidgetComponent;

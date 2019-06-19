@@ -18,7 +18,10 @@
 import { Injectable } from '@angular/core';
 import { AlfrescoApiService } from '@alfresco/adf-core';
 import { MatDialog } from '@angular/material';
-import { ContentNodeSelectorComponent, ContentNodeSelectorComponentData } from '@alfresco/adf-content-services';
+import {
+  ContentNodeSelectorComponent,
+  ContentNodeSelectorComponentData
+} from '@alfresco/adf-content-services';
 import { Node } from '@alfresco/js-api';
 import { Observable, Subject } from 'rxjs';
 

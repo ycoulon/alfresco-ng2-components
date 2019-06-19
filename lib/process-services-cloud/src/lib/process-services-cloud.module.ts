@@ -24,6 +24,7 @@ import { GroupCloudModule } from './group/group-cloud.module';
 import { FormCloudModule } from './form/form-cloud.module';
 import { TaskFormModule } from './task/task-form/task-form.module';
 import { BaseCloudService } from './services/base-cloud.service';
+import { ContentCloudWidgetModule } from './content/content-cloud-widget.module';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { BaseCloudService } from './services/base-cloud.service';
         TaskCloudModule,
         GroupCloudModule,
         FormCloudModule,
-        TaskFormModule
+        TaskFormModule,
+        ContentCloudWidgetModule
     ],
     providers: [
         {
@@ -52,7 +54,8 @@ import { BaseCloudService } from './services/base-cloud.service';
         TaskCloudModule,
         GroupCloudModule,
         FormCloudModule,
-        TaskFormModule
+        TaskFormModule,
+        ContentCloudWidgetModule
     ]
 })
 export class ProcessServicesCloudModule { }

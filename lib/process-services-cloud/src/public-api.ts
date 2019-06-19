@@ -23,3 +23,4 @@ export * from './lib/task/public-api';
 export * from './lib/group/public-api';
 export * from './lib/form/public-api';
 export * from './lib/services/public-api';
+export * from './lib/content/public-api';

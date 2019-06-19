@@ -23,7 +23,7 @@ import { FormCloud } from '../../../form/models/form-cloud.model';
 import { TaskDetailsCloudModel } from '../../start-task/models/task-details-cloud.model';
 import { TaskCloudService } from '../../services/task-cloud.service';
 import { FormRenderingService } from '@alfresco/adf-core';
-import { AttachFileCloudWidgetComponent } from '../../../form/components/attach-file-cloud-widget/attach-file-cloud-widget.component';
+import { AttachFileCloudWidgetComponent } from '../../../content/components/attach-file-cloud-widget.component';
 import { DropdownCloudWidgetComponent } from '../../../form/components/dropdown-cloud/dropdown-cloud.widget';
 
 @Component({
