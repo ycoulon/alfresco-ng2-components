@@ -17,7 +17,7 @@
 
 import { Injectable } from '@angular/core';
 import { from, of, Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 
 import { AlfrescoApiService, AppConfigService, LogService } from '@alfresco/adf-core';
 import { GroupSearchParam, GroupRoleModel } from '../models/group.model';
@@ -32,6 +32,118 @@ export class GroupCloudService {
         private appConfigService: AppConfigService,
         private logService: LogService
     ) {}
+
+    /**
+     * Gets all groups.
+     * @returns Array of group info objects
+     */
+    getGroups(): Observable<any> {
+        const url = this.getGroupsApi();
+        const httpMethod = 'GET', pathParams = {},
+        queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, authNames = [], contentTypes = ['application/json'];
+
+        return from(this.apiService.getInstance().oauth2Auth.callCustomApi(
+                    url, httpMethod, pathParams, queryParams,
+                    headerParams, formParams, bodyParam, authNames,
+                    contentTypes, null, null, null));
+    }
+
+    /**
+     * Gets details for all users.
+     * @returns Array of user info objects
+     */
+    queryGroups(skipCount: number = 0, size: number = 5): Observable<any> {
+        const url = this.getGroupsApi();
+        const httpMethod = 'GET', pathParams = {},
+        queryParams = { first: skipCount, max: size }, bodyParam = {}, headerParams = {},
+            formParams = {}, authNames = [], contentTypes = ['application/json'];
+
+        return this.getTotalGroupsCount().pipe(
+                switchMap((totalCount: any) =>
+                from(this.apiService.getInstance().oauth2Auth.callCustomApi(
+                    url, httpMethod, pathParams, queryParams,
+                    headerParams, formParams, bodyParam, authNames,
+                    contentTypes, null, null, null)
+                ).pipe(
+                    map((response: any[]) => {
+                        return {
+                            entries: response,
+                            pagination: {
+                              skipCount: skipCount,
+                              maxItems: size,
+                              count: totalCount,
+                              hasMoreItems: false,
+                              totalItems: totalCount
+                            }
+                          };
+                    })))
+        );
+    }
+
+    /**
+     * Gets groups total count.
+     * @returns Number of groups count.
+     */
+    getTotalGroupsCount(): Observable<any> {
+        const url = this.getGroupsApi() + `/count`;
+        const contentTypes = ['application/json'], accepts = ['application/json'];
+        return from(this.apiService.getInstance()
+            .oauth2Auth.callCustomApi(url, 'GET',
+              null, null, null,
+              null, null, contentTypes,
+              accepts, null, null, null));
+    }
+
+    /**
+     * Creates new group.
+     * @param newGroup Object of containing the new group details.
+     * @returns List of users information
+     */
+    createGroup(newGroup: any): Observable<any> {
+        const url = this.getGroupsApi();
+        const httpMethod = 'POST', pathParams = {}, queryParams = {}, bodyParam = newGroup, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.apiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Updates group details.
+     * @param groupId Id of the targeted group.
+     * @param updatedGroup Object of containing the group details
+     * @returns List of users information
+     */
+    updateGroup(groupId: string, updatedGroup: any): Observable<any> {
+        const url = this.getGroupsApi() + '/' + groupId;
+        const request = JSON.stringify(updatedGroup);
+        const httpMethod = 'PUT', pathParams = {} , queryParams = {}, bodyParam = request, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.apiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Deletes Group.
+     * @param groupId Id of the targeted group.
+     * @returns List of users information
+     */
+    deleteGroup(groupId: any): Observable<any> {
+        const url = this.getGroupsApi() + '/' + groupId;
+        const httpMethod = 'DELETE', pathParams = {} , queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.apiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
 
     /**
      * Finds groups filtered by name.

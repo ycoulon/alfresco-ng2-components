@@ -364,6 +364,259 @@ export class IdentityUserService {
         }));
     }
 
+    /**
+     * Gets details for all users.
+     * @returns Array of user info objects
+     */
+    queryUsers(skipCount: number = 0, size: number = 700): Observable<any> {
+        const url = this.buildUserUrl();
+        const httpMethod = 'GET', pathParams = {},
+        queryParams = { first: skipCount, max: size }, bodyParam = {}, headerParams = {},
+            formParams = {}, authNames = [], contentTypes = ['application/json'];
+
+        return this.getTotalUsersCount().pipe(
+                switchMap((totalCount: any) =>
+                from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+                    url, httpMethod, pathParams, queryParams,
+                    headerParams, formParams, bodyParam, authNames,
+                    contentTypes, null, null, null)
+                ).pipe(
+                    map((response: IdentityUserModel[]) => {
+                        return {
+                            entries: response,
+                            pagination: {
+                              skipCount: skipCount,
+                              maxItems: size,
+                              count: totalCount,
+                              hasMoreItems: false,
+                              totalItems: totalCount
+                            }
+                          };
+                    })))
+        );
+    }
+
+    /**
+     * Gets users total count.
+     * @returns Number of users count.
+     */
+    getTotalUsersCount(): Observable<number> {
+        const url = this.buildUserUrl() + `/count`;
+        const contentTypes = ['application/json'], accepts = ['application/json'];
+        return from(this.alfrescoApiService.getInstance()
+            .oauth2Auth.callCustomApi(url, 'GET',
+              null, null, null,
+              null, null, contentTypes,
+              accepts, null, null, null));
+    }
+
+    /**
+     * Creates new user.
+     * @param newUser Object containing the new user details.
+     * @returns List of users information
+     */
+    createUser(newUser: any): Observable<any> {
+        const url = this.buildUserUrl();
+        const httpMethod = 'POST', pathParams = {}, queryParams = {}, bodyParam = newUser, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Updates user details.
+     * @param userId Id of the targeted user.
+     * @param updatedUser Object containing the user details
+     * @returns List of users information
+     */
+    updateUser(userId: string, updatedUser: any): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId;
+        const request = JSON.stringify(updatedUser);
+        const httpMethod = 'PUT', pathParams = {} , queryParams = {}, bodyParam = request, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Deletes User.
+     * @param userId Id of the targeted user.
+     * @returns List of users information
+     */
+    deleteUser(userId: string): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId;
+        const httpMethod = 'DELETE', pathParams = {} , queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Changes user password.
+     * @param userId Id of the targeted user.
+     * @param credentials Details of user Credentials.
+     * @returns List of users information
+     */
+    changePassword(userId: string, credentials: any): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/reset-password';
+        const request = JSON.stringify({ type: 'password', 'value': credentials.value, 'temporary': credentials.temporary });
+        const httpMethod = 'PUT', pathParams = {} , queryParams = {}, bodyParam = request, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Gets Involved groups.
+     * @param userId Id of the targeted user.
+     * @returns Array of groups info objects
+     */
+    getInvolvedGroups(userId: string): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/groups/';
+        const httpMethod = 'GET', pathParams = { id: userId},
+        queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, authNames = [], contentTypes = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+                    url, httpMethod, pathParams, queryParams,
+                    headerParams, formParams, bodyParam, authNames,
+                    contentTypes, null, null, null));
+    }
+
+    /**
+     * Joins group.
+     * @param userId Id of the targeted user.
+     * @param groupId Id of the targeted group.
+     * @returns List of users information
+     */
+    joinGroup(userId: string, groupId: any): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/groups/' + groupId;
+        const request = { realm: 'alfresco', userId: userId, groupId: groupId };
+        const httpMethod = 'PUT', pathParams = {} , queryParams = {}, bodyParam = request, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Leaves or delete group for a targeted user.
+     * @param userId Id of the targeted user.
+     * @param groupId Id of the targeted group.
+     * @returns List of users information
+     */
+    leaveGroup(userId: any, groupId: string): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/groups/' + groupId;
+        const httpMethod = 'DELETE', pathParams = {} , queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * Gets available roles
+     * @param userId Id of the targeted user.
+     * @returns Array of user info objects
+     */
+    getAvailableRoles(userId: string): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/role-mappings/realm/available';
+        const httpMethod = 'GET', pathParams = {},
+        queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, authNames = [], contentTypes = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+                    url, httpMethod, pathParams, queryParams,
+                    headerParams, formParams, bodyParam, authNames,
+                    contentTypes, null, null, null));
+    }
+
+    /**
+     * Gets assigned roles.
+     * @param userId Id of the targeted user.
+     * @returns Array of user info objects
+     */
+    getAssignedRoles(userId: string): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/role-mappings/realm';
+        const httpMethod = 'GET', pathParams = { id: userId},
+        queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, authNames = [], contentTypes = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+                    url, httpMethod, pathParams, queryParams,
+                    headerParams, formParams, bodyParam, authNames,
+                    contentTypes, null, null, null));
+    }
+
+    /**
+     * Gets composite roles.
+     * @param userId Id of the targeted user.
+     * @returns Array of user info objects
+     */
+    getEffectiveRoles(userId: string): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/role-mappings/realm/composite';
+        const httpMethod = 'GET', pathParams = { id: userId},
+        queryParams = {}, bodyParam = {}, headerParams = {},
+        formParams = {}, authNames = [], contentTypes = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+                    url, httpMethod, pathParams, queryParams,
+                    headerParams, formParams, bodyParam, authNames,
+                    contentTypes, null, null, null));
+    }
+
+    /**
+     * Assigns roles to the user.
+     * @param userId Id of the targeted user.
+     * @param roles Array of roles.
+     * @returns List of users information
+     */
+    assignRoles(userId: string, roles: any): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/role-mappings/realm';
+        const request = roles;
+        const httpMethod = 'POST', pathParams = {} , queryParams = {}, bodyParam = request, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
+    /**
+     * remove assigned roles.
+     * @param userId Id of the targeted user.
+     * @param roles Array of roles.
+     * @returns List of users information
+     */
+    removeRoles(userId: string, roles: any): Observable<any> {
+        const url = this.buildUserUrl() + '/' + userId + '/role-mappings/realm';
+        const request = roles;
+        const httpMethod = 'DELETE', pathParams = {} , queryParams = {}, bodyParam = request, headerParams = {},
+        formParams = {}, contentTypes = ['application/json'], accepts = ['application/json'];
+
+        return from(this.alfrescoApiService.getInstance().oauth2Auth.callCustomApi(
+        url, httpMethod, pathParams, queryParams,
+        headerParams, formParams, bodyParam,
+        contentTypes, accepts, null, null, null));
+    }
+
     private buildUserUrl(): any {
         return `${this.appConfigService.get('identityHost')}/users`;
     }
