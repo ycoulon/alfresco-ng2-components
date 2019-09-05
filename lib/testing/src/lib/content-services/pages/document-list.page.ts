@@ -23,7 +23,6 @@ import { BrowserActions } from '../../core/utils/browser-actions';
 export class DocumentListPage {
 
     rootElement: ElementFinder;
-    actionMenu: ElementFinder = element(by.css('div[role="menu"]'));
     optionButton: Locator = by.css('button[data-automation-id*="action_menu_"]');
     tableBody: ElementFinder;
     dataTable: DataTableComponentPage;
@@ -34,13 +33,13 @@ export class DocumentListPage {
         this.tableBody = rootElement.all(by.css('div[class="adf-datatable-body"]')).first();
     }
 
-    async checkLockedIcon(content): Promise<void> {
+    async checkLockedIcon(content: string): Promise<void> {
         const row = this.dataTable.getRow('Display name', content);
         const lockIcon = row.element(by.cssContainingText('div[title="Lock"] mat-icon', 'lock'));
         await BrowserVisibility.waitUntilElementIsVisible(lockIcon);
     }
 
-    async checkUnlockedIcon(content): Promise<void> {
+    async checkUnlockedIcon(content: string): Promise<void> {
         const row = this.dataTable.getRow('Display name', content);
         const lockIcon = row.element(by.cssContainingText('div[title="Lock"] mat-icon', 'lock_open'));
         await BrowserVisibility.waitUntilElementIsVisible(lockIcon);
@@ -50,39 +49,39 @@ export class DocumentListPage {
         await BrowserVisibility.waitUntilElementIsVisible(this.tableBody);
     }
 
-    async getTooltip(nodeName): Promise<string> {
+    async getTooltip(nodeName: string): Promise<string> {
         return await this.dataTable.getTooltip('Display name', nodeName);
     }
 
-    async selectRow(nodeName): Promise<void> {
+    async selectRow(nodeName: string): Promise<void> {
         await this.dataTable.selectRow('Display name', nodeName);
     }
 
-    async rightClickOnRow(nodeName): Promise<void> {
+    async rightClickOnRow(nodeName: string): Promise<void> {
         await this.dataTable.rightClickOnRow('Display name', nodeName);
     }
 
-    async clickOnActionMenu(content): Promise<void> {
+    async clickOnActionMenu(content: string): Promise<void> {
         await BrowserActions.closeMenuAndDialogs();
         const row: ElementFinder = this.dataTable.getRow('Display name', content);
         await BrowserActions.click(row.element(this.optionButton));
-        await BrowserVisibility.waitUntilElementIsVisible(this.actionMenu);
+        await BrowserActions.waitUntilActionMenuIsVisible();
         await browser.sleep(500);
     }
 
     async checkActionMenuIsNotDisplayed(): Promise<void> {
-        await BrowserVisibility.waitUntilElementIsNotVisible(this.actionMenu);
+        await BrowserActions.waitUntilActionMenuIsNotVisible();
     }
 
     dataTablePage(): DataTableComponentPage {
         return new DataTableComponentPage(this.rootElement);
     }
 
-    async getAllRowsColumnValues(column) {
+    async getAllRowsColumnValues(column: string) {
         return await this.dataTable.getAllRowsColumnValues(column);
     }
 
-    async doubleClickRow(nodeName): Promise<void> {
+    async doubleClickRow(nodeName: string): Promise<void> {
         await this.dataTable.doubleClickRow('Display name', nodeName);
     }
 }

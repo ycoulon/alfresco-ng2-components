@@ -6,17 +6,33 @@ cd $DIR/../../../
 
 rm -rf tmp && mkdir tmp;
 
+npm install @alfresco/adf-cli@alpha
+./node_modules/@alfresco/adf-cli/bin/adf-cli update-commit-sha --pointer "HEAD" --pathPackage "$(pwd)"
+
 if [[ $TRAVIS_PULL_REQUEST == "false" ]];
 then
-    ./scripts/update-version.sh -nextalpha -gnu -minor -components
-    ./scripts/npm-build-all.sh -c || exit 1;
+    if [[ $TRAVIS_BRANCH == "development" ]];
+    then
+        NEXT_VERSION=-nextalpha
+        if [[ $TRAVIS_EVENT_TYPE == "cron" ]];
+        then
+            NEXT_VERSION=-nextbeta
+        fi
+        ./scripts/update-version.sh -gnu $NEXT_VERSION || exit 1;
+    fi
+
+    node ./scripts/pre-publish.js
+
+    npm install
+
+    ./scripts/npm-build-all.sh || exit 1;
 else
-    ./scripts/update-version.sh -gnu -alpha || exit 1;
+    ./node_modules/@alfresco/adf-cli/bin/adf-cli update-version --alpha --pathPackage "$(pwd)"
+
+    npm install;
+
     ./scripts/smart-build.sh -b $TRAVIS_BRANCH  -gnu || exit 1;
 fi;
 
 echo "====== Build Demo shell dist ====="
 npm run build:dist || exit 1;
-
-echo "====== License Check ====="
-npm run license-checker

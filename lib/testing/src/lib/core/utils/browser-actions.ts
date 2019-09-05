@@ -26,6 +26,16 @@ export class BrowserActions {
         await elementFinder.click();
     }
 
+    static async waitUntilActionMenuIsVisible(): Promise<void> {
+        const actionMenu = element(by.css('div[role="menu"]'));
+        await BrowserVisibility.waitUntilElementIsVisible(actionMenu);
+    }
+
+    static async waitUntilActionMenuIsNotVisible(): Promise<void> {
+        const actionMenu = element(by.css('div[role="menu"]'));
+        await BrowserVisibility.waitUntilElementIsNotVisible(actionMenu);
+    }
+
     static async getUrl(url: string): Promise<any> {
         return browser.get(url);
     }
@@ -77,8 +87,7 @@ export class BrowserActions {
     }
 
     static async rightClick(elementFinder: ElementFinder): Promise<void> {
-        await BrowserVisibility.waitUntilElementIsVisible(elementFinder);
-        await browser.actions().mouseMove(elementFinder).perform();
+        await browser.actions().mouseMove(elementFinder).mouseDown().mouseMove(elementFinder).perform();
         await browser.actions().click(elementFinder, protractor.Button.RIGHT).perform();
     }
 

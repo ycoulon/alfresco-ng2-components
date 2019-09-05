@@ -73,6 +73,7 @@ describe('Start Task', () => {
         activitiUser = await identityService.createIdentityUser();
         groupInfo = await groupIdentityService.getGroupInfoByGroupName('hr');
         await identityService.addUserToGroup(testUser.idIdentityService, groupInfo.id);
+        await identityService.addUserToGroup(apsUser.idIdentityService, groupInfo.id);
         await apiService.login(testUser.email, testUser.password);
 
         await settingsPage.setProviderBpmSso(
@@ -86,13 +87,14 @@ describe('Start Task', () => {
     afterAll(async () => {
         const tasksService = new TasksService(apiService);
 
-        const tasks = [standaloneTaskName, unassignedTaskName, reassignTaskName];
-        for (let i = 0; i < tasks.length; i++) {
-            const taskId = await tasksService.getTaskId(tasks[i], simpleApp);
-            if (taskId) {
-                await tasksService.deleteTask(taskId, simpleApp);
-            }
-        }
+        let taskId = await tasksService.getTaskId(standaloneTaskName, simpleApp);
+        await tasksService.deleteTask(taskId, simpleApp);
+        taskId = await tasksService.getTaskId(unassignedTaskName, simpleApp);
+        await tasksService.deleteTask(taskId, simpleApp);
+
+        await apiService.login(apsUser.email, apsUser.password);
+        taskId = await tasksService.getTaskId(reassignTaskName, simpleApp);
+        await tasksService.deleteTask(taskId, simpleApp);
 
         await apiService.login(browser.params.identityAdmin.email, browser.params.identityAdmin.password);
         await identityService.deleteIdentityUser(activitiUser.idIdentityService);
@@ -131,10 +133,10 @@ describe('Start Task', () => {
     it('[C291956] Should be able to create a new standalone task without assignee', async () => {
         await tasksCloudDemoPage.openNewTaskForm();
         await startTask.checkFormIsDisplayed();
-        await expect(await peopleCloudComponent.getAssignee()).toContain(testUser.firstName, 'does not contain Admin');
+        await peopleCloudComponent.clearAssignee();
         await startTask.addName(unassignedTaskName);
-        await startTask.clickStartButton();
         await startTask.checkStartButtonIsEnabled();
+        await startTask.clickStartButton();
         await tasksCloudDemoPage.editTaskFilterCloudComponent();
         await tasksCloudDemoPage.editTaskFilterCloudComponent().clickCustomiseFilterHeader();
         await tasksCloudDemoPage.editTaskFilterCloudComponent().setStatusFilterDropDown('CREATED');
@@ -194,7 +196,7 @@ describe('Start Task', () => {
         await tasksCloudDemoPage.openNewTaskForm();
         await startTask.checkFormIsDisplayed();
         await startTask.addName(standaloneTaskName);
-        await peopleCloudComponent.searchAssigneeAndSelect(`${activitiUser.firstName} ${activitiUser.lastName}`);
+        await peopleCloudComponent.searchAssigneeAndSelect(`${apsUser.firstName} ${apsUser.lastName}`);
 
         await startTask.checkStartButtonIsEnabled();
         await startTask.clickStartButton();

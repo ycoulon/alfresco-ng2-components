@@ -89,6 +89,12 @@ Update only js-api with a specific version
 adf-cli update-version --vjs "3.2.0-fa5916ff413131513c3e382d7f27dd9b4cfa0e7e" --pathPackage "$(pwd)"
 ```
 
+Update adf libs and js-api with latest alpha locally
+
+```bash
+adf-cli update-version --alpha --pathPackage "$(pwd)" --skipGnu
+```
+
 ### Update commit sha
 
 This command allows you to update the commit sha as part of the package.json.
@@ -104,23 +110,7 @@ You can use the option --pointer to chose a different pointer from the default H
 adf-cli update-commit-sha --pointer "HEAD~1" --pathProject "$(pwd)"
 ```
 
-### npm publish
-
-This command allows you to publish your lib on the npm.
-
+Run command locally
 ```bash
-adf-cli npm-publish --pathProject "$(pwd)"
+adf-cli update-commit-sha --pathProject "$(pwd)" --skipGnu
 ```
-
-You can use the option --npmRegistry "localhost:4873" to chose a different registry and --tokenRegistry "VALID_TOKEN" to pass the token.
-
-```bash
-adf-cli update-commit-sha --npmRegistry "localhost:4873" --tokenRegistry "VALID_TOKEN" --pathProject "$(pwd)"
-```
-
-In case you want to add a tag you can use the option --tag "alpha|beta|latest" .
-
-```bash
-adf-cli update-commit-sha --tag "beta" --pathProject "$(pwd)"
-```
-
