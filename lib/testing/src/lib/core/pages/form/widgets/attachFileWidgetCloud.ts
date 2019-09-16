@@ -30,7 +30,7 @@ export class AttachFileWidgetCloud {
         this.assignWidget(fieldId);
     }
 
-    assignWidget(fieldId: string): void {
+    assignWidget(fieldId: string) {
         this.widget = this.formFields.getWidget(fieldId);
     }
 
@@ -43,9 +43,16 @@ export class AttachFileWidgetCloud {
     }
 
     async clickAttachContentFile(fileId: string): Promise<void> {
-        const uploadButton = this.widget.element(by.css(`button[id=${fileId}]`));
+        await this.waitForWidgetClickable();
+        const uploadButton = element(by.css(`button[id=${fileId}]`)),
+            dropdownFile = element(by.css('button[id="attach-Alfresco Content"]'));
         await BrowserActions.click(uploadButton);
-        await BrowserActions.clickExecuteScript('button[id="attach-Alfresco Content"]');
+        await BrowserActions.click(dropdownFile);
+    }
+
+    async waitForWidgetClickable() {
+        await BrowserVisibility.waitUntilElementIsPresent(this.widget);
+        await BrowserVisibility.waitUntilElementIsClickable(this.widget);
     }
 
     async checkUploadContentButtonIsDisplayed(fileId: string): Promise<void> {
