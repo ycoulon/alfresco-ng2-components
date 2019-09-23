@@ -30,7 +30,7 @@ export class AttachFileWidgetCloud {
         this.assignWidget(fieldId);
     }
 
-    assignWidget(fieldId: string) {
+    assignWidget(fieldId: string): void {
         this.widget = this.formFields.getWidget(fieldId);
     }
 
