@@ -133,7 +133,7 @@ before_deploy:
   - git config --local user.name "Alfresco"
   - export TRAVIS_TAG=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
   - echo "Create tag:" $TRAVIS_TAG
-  - git tag $TRAVIS_TAG
+  - git tag $TRAVIS_TAG -f
 
 deploy:
   provider: releases
