@@ -30,7 +30,7 @@ vjs() {
     JS_VERSION=$1
 }
 
-VERSION() {
+version() {
     VERSION=$1
 }
 
