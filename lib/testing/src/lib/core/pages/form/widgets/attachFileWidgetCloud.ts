@@ -45,7 +45,7 @@ export class AttachFileWidgetCloud {
     async clickAttachContentFile(fileId: string): Promise<void> {
         await this.waitForWidgetClickable();
         const uploadButton = element(by.css(`button[id=${fileId}]`)),
-            dropdownFile = element(by.css('button[id="attach-Alfresco Content"]'));
+            dropdownFile = element(by.css('.adf-attach-widget__menu-content button[id="attach-Alfresco Content"]'));
         await BrowserActions.click(uploadButton);
         await BrowserActions.click(dropdownFile);
     }

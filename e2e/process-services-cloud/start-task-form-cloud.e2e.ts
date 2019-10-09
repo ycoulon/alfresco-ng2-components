@@ -48,7 +48,7 @@ import { FileModel } from '../models/ACS/fileModel';
 import { AlfrescoApiCompatibility as AlfrescoApi } from '@alfresco/js-api';
 import { AcsUserModel } from '../models/ACS/acsUserModel';
 import { BreadCrumbDropdownPage } from '../pages/adf/content-services/breadcrumb/breadCrumbDropdownPage';
-import { ViewerPage } from '../pages/adf/viewerPage';
+// import { ViewerPage } from '../pages/adf/viewerPage';
 
 describe('Start Task Form', () => {
 
@@ -67,7 +67,7 @@ describe('Start Task Form', () => {
     const processCloudDemoPage = new ProcessCloudDemoPage();
     const taskHeaderCloudPage = new TaskHeaderCloudPage();
     const processHeaderCloud = new ProcessHeaderCloudPage();
-    const viewer = new ViewerPage();
+    // const viewer = new ViewerPage();
     const apiService = new ApiService(
         browser.params.config.oauth2.clientId,
         browser.params.config.bpmHost, browser.params.config.oauth2.host, browser.params.config.providers
@@ -195,7 +195,7 @@ describe('Start Task Form', () => {
             await tasksCloudDemoPage.openNewTaskForm();
             await startTask.checkFormIsDisplayed();
             await startTask.addName(standaloneTaskName);
-            await startTask.selectFormDefinition('StartEventForm');
+            await startTask.selectFormDefinition('starteventform');
             await startTask.clickStartButton();
             await tasksCloudDemoPage.taskListCloudComponent().checkContentIsDisplayedByName(standaloneTaskName);
             await tasksCloudDemoPage.taskListCloudComponent().selectRow(standaloneTaskName);
@@ -228,8 +228,8 @@ describe('Start Task Form', () => {
             await tasksCloudDemoPage.openNewTaskForm();
             await startTask.checkFormIsDisplayed();
             await startTask.checkFormDefinitionIsNotDisplayed('UploadFileForm');
-            await startTask.checkFormDefinitionIsDisplayed('StartEventForm');
-            await startTask.checkFormDefinitionIsDisplayed('FormToTestValidations');
+            await startTask.checkFormDefinitionIsDisplayed('starteventform');
+            await startTask.checkFormDefinitionIsDisplayed('formtotestvalidations');
         });
 
     });
@@ -379,10 +379,10 @@ describe('Start Task Form', () => {
             await contentFileWidget.downloadFile(testFileModel.name);
             await expect(await FileBrowserUtil.isFileDownloaded(testFileModel.name)).toBe(true);
 
-            await contentFileWidget.viewFile(testFileModel.name);
-            await viewer.checkFileIsLoaded();
-            await viewer.checkFileNameIsDisplayed(testFileModel.name);
-            await viewer.clickCloseButton();
+            // await contentFileWidget.viewFile(testFileModel.name);
+            // await viewer.checkFileIsLoaded();
+            // await viewer.checkFileNameIsDisplayed(testFileModel.name);
+            // await viewer.clickCloseButton();
         });
 
         it('[C311287] Content node selector default location when attaching a file to a form from acs repository', async () => {
